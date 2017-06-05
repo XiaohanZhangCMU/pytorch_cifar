@@ -7,7 +7,7 @@ class CNN(nn.Module):
         super(CNN, self).__init__()
         self.module_1 = nn.Sequential(
             nn.Conv2d(
-                in_channels=1,
+                in_channels=3,
                 out_channels=16,
                 kernel_size=3,
                 stride=1,
@@ -21,7 +21,7 @@ class CNN(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(2),                                
         )
-        self.out = nn.Linear(32 * 7 * 7, 10)
+        self.out = nn.Linear(32 * 8 * 8, 10)
 
     def forward(self, x):
         x = self.module_1(x)
