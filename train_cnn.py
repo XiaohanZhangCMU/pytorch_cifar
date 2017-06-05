@@ -8,15 +8,15 @@ import cnn_models
 
 EPOCH = 1
 BATCH_SIZE = 50
-LR = 0.001
+LR = 0.001    # 0.001: 43%. 0.01: 36%. 0.0001: 32%
 DOWNLOAD_MNIST = False
 DOWNLOAD_CIFAR10 = False
 nnfile = 'cnn.pkl' 
 nnparamfile = 'cnn.pkl.params'
-use_cuda = False; 
-# torch.cuda.is_available()
+use_cuda = False #torch.cuda.is_available()
 
 def train_and_save( net, train_loader, validation_x, validation_y, lr, EPOCH, nnfile, nnparamfile):
+    #SGD: %12. #ADM: 43%.
     optimizer = torch.optim.Adam(net.parameters(), lr=lr)
     loss_function = nn.CrossEntropyLoss()
     train_loss = 0 
