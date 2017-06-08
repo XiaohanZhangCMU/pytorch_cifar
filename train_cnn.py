@@ -3,7 +3,7 @@ import torch
 import torchvision
 import torch.nn as nn
 from torch.autograd import Variable
-#from utils import progress_bar
+from utils import progress_bar
 import cnn_models
 
 '''
@@ -17,8 +17,8 @@ To do:
 
 
 EPOCH = 5
-BATCH_SIZE = to_be_replaced #150
-LR = to_be_replaced/10000.  #0.0022
+BATCH_SIZE = 128 #150
+LR = 0.0028 #40/10000.  #0.0022
 DOWNLOAD_MNIST = False
 DOWNLOAD_CIFAR10 = False
 nnfile = 'cnn.pkl' 
@@ -28,6 +28,7 @@ use_cuda = torch.cuda.is_available()
 def train_and_save( net, train_loader, validation_x, validation_y, lr, EPOCH, nnfile, nnparamfile):
     #SGD: %12. #ADM: 43%.
     optimizer = torch.optim.Adam(net.parameters(), lr=lr)
+#    optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
     loss_function = nn.CrossEntropyLoss()
     train_loss = 0 
     total = 0
@@ -53,7 +54,7 @@ def train_and_save( net, train_loader, validation_x, validation_y, lr, EPOCH, nn
                 _, predicted = torch.max(prediction.data,1)
                 total += b_y.size(0)
                 correct += predicted.eq(b_y.data).cpu().sum()
-                if (0) : # progress bar gives runtime error if running on nodes. Interactively fun.
+                if (1) : # progress bar gives runtime error if running on nodes. Interactively fun.
                     progress_bar(batch_idx, len(train_loader), 'Loss: %.3f | Acc: %3f%% (%d%d)'
                         %(train_loss/(batch_idx+1), 100.*correct/total, correct, total))
                 

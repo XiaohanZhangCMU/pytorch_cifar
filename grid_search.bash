@@ -2,7 +2,7 @@
 
 for ((lr=40; lr <= 40; lr+=1))
 do
-    for ((bz=150; bz <= 200; bz+=10))
+    for ((bz=256; bz <= 256; bz+=10))
     do
 	mkdir param-test-${lr}-${bz}
 	cd param-test-${lr}-${bz}
@@ -26,7 +26,8 @@ python train_cnn.py
 
 wait
 FIN
-	qsub auto_${lr}_${bz}.pbs
+#	qsub auto_${lr}_${bz}.pbs
+        python train_cnn.py
 	cd ..
     done
 done
