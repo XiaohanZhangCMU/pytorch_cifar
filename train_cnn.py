@@ -18,7 +18,7 @@ To do:
 
 N_EPOCH = 300
 BATCH_SIZE = 128 #150
-LR = 0.0028 #40/10000.  #0.0022
+LR = 0.1 #Initial learning rate
 DOWNLOAD_MNIST = False
 DOWNLOAD_CIFAR10 = False
 nnfile = 'cnn.pkl' 
@@ -26,16 +26,23 @@ nnparamfile = 'cnn.pkl.params'
 use_cuda = torch.cuda.is_available()
 
 def train_and_save( net, train_loader, validation_x, validation_y, lr, N_EPOCH, nnfile, nnparamfile):
-    #SGD: %12. #ADM: 43%.
-    optimizer = torch.optim.Adam(net.parameters(), lr=lr)
-#    optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
     loss_function = nn.CrossEntropyLoss()
     log_train = open('Log_Train_'+str(LR) +'_'+ str(BATCH_SIZE)+'.txt','a')
     log_valid = open('Log_Valid_'+str(LR) +'_'+ str(BATCH_SIZE)+'.txt','a')
+    epoch_id = 0
     for epoch in range(N_EPOCH):
         train_loss = 0 
         total = 0
         correct = 0
+        if (epoch_id < 1.0/3 *N_EPOCH):
+            lr = LR
+        elif (epoch_id < 2.0/3*N_EPOCH):
+            lr = 0.01
+        else:
+            lr = 0.0028
+
+#       optimizer = torch.optim.Adam(net.parameters(), lr=lr)
+        optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
         for batch_idx, (x,y) in enumerate(train_loader):
             if (use_cuda): 
                 x, y = x.cuda(), y.cuda()
@@ -64,6 +71,8 @@ def train_and_save( net, train_loader, validation_x, validation_y, lr, N_EPOCH, 
                 buff = 'batch_idx: ' + str(batch_idx) + ': test accuracy: ' + str(accuracy) + '\n'
                 print (buff)
                 log_valid.write(buff)
+        
+        epoch_id += 1
 
     torch.save(net, nnfile+'.'+str(LR)+'.'+str(BATCH_SIZE))
     torch.save(net.state_dict(), nnparamfile+'.'+str(LR)+'.'+str(BATCH_SIZE))

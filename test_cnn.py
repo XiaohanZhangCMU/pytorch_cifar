@@ -27,7 +27,8 @@ def main(sys):
     test_data = torchvision.datasets.CIFAR10(root='../cifar10/', train=False, transform = transform_test, download=False)
     test_loader = torch.utils.data.DataLoader(dataset = test_data, batch_size = 100, shuffle=True, num_workers=2) 
 
-    net = torch.load('cnn.pkl.0.0028.128') 
+#    net = torch.load('cnn.pkl.0.0028.128') 
+    net = torch.load('cnn.pkl.0.1.128')
     net.eval()
     test_loss = 0
     correct = 0

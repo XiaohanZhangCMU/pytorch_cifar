@@ -26,8 +26,8 @@ python train_cnn.py
 
 wait
 FIN
-#	qsub auto_${lr}_${bz}.pbs
-        python train_cnn.py
+	qsub auto_${lr}_${bz}.pbs
+        #python train_cnn.py
 	cd ..
     done
 done
