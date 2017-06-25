@@ -4,6 +4,8 @@ import torchvision
 from torch.autograd import Variable
 import sys
 from utils import progress_bar
+import torch
+import cifar10
 
 use_cuda = torch.cuda.is_available()
 
@@ -20,11 +22,7 @@ def main1(sys):
     
 def main(sys):
     phototags = {'plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck'}
-    transform_test = torchvision.transforms.Compose([
-        torchvision.transforms.ToTensor(),
-        torchvision.transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-     ])
-    test_data = torchvision.datasets.CIFAR10(root='../cifar10/', train=False, transform = transform_test, download=False)
+    test_data = cifar10.CIFAR10(root='../../cifar10/', train=False, download=False)
     test_loader = torch.utils.data.DataLoader(dataset = test_data, batch_size = 100, shuffle=True, num_workers=2) 
 
 #    net = torch.load('cnn.pkl.0.0028.128') 
